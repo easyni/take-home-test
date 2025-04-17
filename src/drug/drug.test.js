@@ -1,7 +1,6 @@
-import { Drug } from "./drug";
+import { Drug, DRUGS_TYPES } from "./drug";
 import { DrugStrategy } from "./drug.strategy";
 import { DolipraneStrategy } from "./strategies/doliprane.strategy";
-import { HerbalTeaStrategy } from "./strategies/herbalTea.strategy";
 
 // Mock the strategy classes
 jest.mock("./drug.strategy");
@@ -11,19 +10,10 @@ describe("Drug", () => {
   beforeEach(() => {
     // Clear all mocks before each test
     jest.clearAllMocks();
-
-    // Setup default mock implementations
-    DrugStrategy.mockImplementation(() => ({
-      applyStrategy: jest.fn((props) => props),
-    }));
-
-    DolipraneStrategy.mockImplementation(() => ({
-      applyStrategy: jest.fn((props) => props),
-    }));
   });
 
-  describe("updateBenefitValue", () => {
-    it("should use the apply default DrugStrategy to unknown drugs", () => {
+  describe("updateValues", () => {
+    it("should use the default DrugStrategy to unknown drugs", () => {
       const drug = new Drug("Test Drug", 10, 20);
       const mockApplyStrategy = jest.fn().mockReturnValue({
         name: "Test Drug",
@@ -35,7 +25,7 @@ describe("Drug", () => {
         applyStrategy: mockApplyStrategy,
       }));
 
-      drug.updateBenefitValue();
+      drug.updateValues();
 
       expect(mockApplyStrategy).toHaveBeenCalledWith({
         name: "Test Drug",
@@ -46,30 +36,29 @@ describe("Drug", () => {
       expect(drug.expiresIn).toBe(9);
       expect(drug.benefit).toBe(21);
     });
-  });
+    it("should use the correct strategy to update drug properties for known drugs", () => {
+      const drug = new Drug(DRUGS_TYPES.DOLIPRANE, 10, 20);
+      const mockApplyStrategy = jest.fn().mockReturnValue({
+        name: DRUGS_TYPES.DOLIPRANE,
+        expiresIn: 9,
+        benefit: 21,
+      });
 
-  it("should use the correct strategy to update drug properties", () => {
-    const drug = new Drug("Test Drug", 10, 20);
-    const mockApplyStrategy = jest.fn().mockReturnValue({
-      name: "Test Drug",
-      expiresIn: 9,
-      benefit: 21,
+      DolipraneStrategy.mockImplementation(() => ({
+        applyStrategy: mockApplyStrategy,
+      }));
+
+      drug.updateValues();
+
+      expect(mockApplyStrategy).toHaveBeenCalledWith({
+        name: DRUGS_TYPES.DOLIPRANE,
+        expiresIn: 10,
+        benefit: 20,
+      });
+
+      expect(drug.expiresIn).toBe(9);
+      expect(drug.benefit).toBe(21);
     });
-
-    HerbalTeaStrategy.mockImplementation(() => ({
-      applyStrategy: mockApplyStrategy,
-    }));
-
-    drug.updateBenefitValue();
-
-    expect(mockApplyStrategy).toHaveBeenCalledWith({
-      name: "Test Drug",
-      expiresIn: 10,
-      benefit: 20,
-    });
-
-    expect(drug.expiresIn).toBe(9);
-    expect(drug.benefit).toBe(21);
   });
 
   describe("getProps", () => {

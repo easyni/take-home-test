@@ -1,6 +1,6 @@
 /**
- * DrugStrategy is an abstract class that defines the strategy for
- * updating the drug benefit depending on its expiresIn date.
+ * @class DrugStrategy
+ * @description Strategy that handles the drug props updates during its lifecycle.
  */
 export class DrugStrategy {
   /**
@@ -8,6 +8,7 @@ export class DrugStrategy {
    * * The Benefit of an item is never negative.
    * * The Benefit of an item is never more than 50.
    * @param {import('./drug').DrugProps} props - The drug properties
+   * @returns {import('./drug').DrugProps} - The updated drug properties
    */
   applyCommonRules(props) {
     const { benefit } = props;
@@ -50,7 +51,7 @@ export class DrugStrategy {
   }
 
   /**
-   * Applies expiresIn rules for the drug
+   * Applies the strategy rules to the drug properties
    * @param {import('./drug').DrugProps} props - The drug properties
    * @returns {import('./drug').DrugProps} - The updated drug properties
    */

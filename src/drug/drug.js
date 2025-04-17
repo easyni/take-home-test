@@ -1,10 +1,21 @@
-import { DRUGS_TYPES } from "./utils/drug.const";
 import { DrugStrategy } from "./drug.strategy";
 import { DolipraneStrategy } from "./strategies/doliprane.strategy";
 import { FervexStrategy } from "./strategies/fervex.strategy";
 import { HerbalTeaStrategy } from "./strategies/herbalTea.strategy";
 import { MagicPillStrategy } from "./strategies/magicPill.strategy";
 import { DafalganStrategy } from "./strategies/dafalgan.strategy";
+
+/**
+ * @constant {Object} DRUGS_TYPES
+ * @description An object containing the different types of drugs.
+ */
+export const DRUGS_TYPES = {
+  HERBAL_TEA: "Herbal Tea",
+  MAGIC_PILL: "Magic Pill",
+  FERVEX: "Fervex",
+  DOLIPRANE: "Doliprane",
+  DAFALGAN: "Dafalgan",
+};
 
 /**
  * @typedef {Object} DrugProps
@@ -14,15 +25,21 @@ import { DafalganStrategy } from "./strategies/dafalgan.strategy";
  */
 
 /**
- * Drug class representing a drug with a name, expiration date, and benefit.
- * @class
- * @property {string} name - The name of the drug
- * @property {number} expiresIn - The number of days until the drug expires
- * @property {number} benefit - The benefit value of the drug
+ * @class Drug
+ * @description Represent a drug with a name, expiration date, and benefit.
  */
 export class Drug {
+  /**
+   * @type {string} the name of the drug
+   */
   name;
+  /**
+   * @type {number} the number of days until the drug expires
+   */
   expiresIn;
+  /**
+   * @type {number} the benefit value of the drug
+   */
   benefit;
 
   /**
@@ -38,14 +55,14 @@ export class Drug {
   }
 
   /**
-   * Updates the drug properties
-   * @param {DrugProps} newProps- The drug properties
+   * Sets the properties of the drug
+   * @param {Partial<DrugProps>} props - The drug properties
    * @returns {Drug} - The updated drug object
    */
-  #updateProperties(newProps) {
-    this.name = newProps.name ?? this.name;
-    this.expiresIn = newProps.expiresIn ?? this.expiresIn;
-    this.benefit = newProps.benefit ?? this.benefit;
+  #setProperties(props) {
+    this.name = props.name ?? this.name;
+    this.expiresIn = props.expiresIn ?? this.expiresIn;
+    this.benefit = props.benefit ?? this.benefit;
     return this;
   }
 
@@ -72,18 +89,7 @@ export class Drug {
   }
 
   /**
-   * Updates the benefit value of the drug based on its strategy
-   * @returns {Drug} - The updated drug object
-   */
-  updateBenefitValue() {
-    const props = this.getProps();
-    const strategy = this.#getStrategy(this.name);
-    const updatedProps = strategy.applyStrategy(props);
-    return this.#updateProperties(updatedProps);
-  }
-
-  /**
-   * Returns drug data for external use
+   * Returns drug properties as an object
    * @returns {DrugProps} - The drug properties
    */
   getProps() {
@@ -92,5 +98,17 @@ export class Drug {
       expiresIn: this.expiresIn,
       benefit: this.benefit,
     };
+  }
+
+  /**
+   * Updates the drug properties based on the appropriate strategy
+   * @returns {Drug} - The updated drug object
+   */
+  updateValues() {
+    const props = this.getProps();
+    const strategy = this.#getStrategy(props.name);
+    const updatedProps = strategy.applyStrategy(props);
+    this.#setProperties(updatedProps);
+    return this;
   }
 }

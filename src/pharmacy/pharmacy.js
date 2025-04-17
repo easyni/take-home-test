@@ -19,7 +19,7 @@ export class Pharmacy {
    */
   updateBenefitValue() {
     for (let i = 0; i < this.drugs.length; i++) {
-      this.drugs[i].updateBenefitValue();
+      this.drugs[i].updateValues();
     }
 
     return this.drugs;

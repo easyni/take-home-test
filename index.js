@@ -1,8 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-import { Drug } from "./src/drug/drug";
-import { DRUGS_TYPES } from "./src/drug/utils/drug.const";
+import { Drug, DRUGS_TYPES } from "./src/drug/drug";
 import { Pharmacy } from "./src/pharmacy/pharmacy";
 
 const drugs = [

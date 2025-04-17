@@ -3,16 +3,6 @@ import { DrugStrategy } from "../drug.strategy";
 /**
  * @class DolipraneStrategy
  * @extends DrugStrategy
- * @description Strategy for handling the Doliprane drug.
+ * @description Strategy for handling the Doliprane drug, no implementation needed as it's a default drug.
  */
-export class DolipraneStrategy extends DrugStrategy {
-  /**
-   * Applies default drug benefit evaluation rules for the drug
-   * @param {import('../drug.strategy').DrugProps} props - The drug properties
-   * @returns {import('../drug.strategy').DrugProps} - The updated drug properties
-   */
-  applyStrategy(props) {
-    const applyExpiresInProps = this.applyExpiresInRules(props);
-    return this.applyBenefitRules(applyExpiresInProps);
-  }
-}
+export class DolipraneStrategy extends DrugStrategy {}
