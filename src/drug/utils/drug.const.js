@@ -3,4 +3,5 @@ export const DRUGS_TYPES = {
   MAGIC_PILL: "Magic Pill",
   FERVEX: "Fervex",
   DOLIPRANE: "Doliprane",
+  DAFALGAN: "Dafalgan",
 };

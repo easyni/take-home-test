@@ -1,11 +1,13 @@
+import path from "path";
+import fs from "fs";
+
 import { Drug } from "./src/drug/drug";
 import { DRUGS_TYPES } from "./src/drug/utils/drug.const";
 import { Pharmacy } from "./src/pharmacy/pharmacy";
 
-import fs from "fs";
-
 const drugs = [
   new Drug(DRUGS_TYPES.DOLIPRANE, 20, 30),
+  new Drug(DRUGS_TYPES.DAFALGAN, 20, 30),
   new Drug(DRUGS_TYPES.HERBAL_TEA, 10, 5),
   new Drug(DRUGS_TYPES.FERVEX, 12, 35),
   new Drug(DRUGS_TYPES.MAGIC_PILL, 15, 40),
@@ -15,12 +17,12 @@ const pharmacy = new Pharmacy(drugs);
 const log = [];
 
 for (let elapsedDays = 0; elapsedDays < 30; elapsedDays++) {
-  log.push(JSON.parse(JSON.stringify(pharmacy.updateBenefitValue())));
+  log.push(pharmacy.updateBenefitValue().map((drug) => drug.getProps()));
 }
 
 /* eslint-disable no-console */
 fs.writeFile(
-  "output.json",
+  path.join(process.cwd(), "output.json"),
   JSON.stringify({ result: log }, null, 2).concat("\n"),
   (err) => {
     if (err) {

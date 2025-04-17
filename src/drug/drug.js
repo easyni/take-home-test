@@ -4,6 +4,7 @@ import { DolipraneStrategy } from "./strategies/doliprane.strategy";
 import { FervexStrategy } from "./strategies/fervex.strategy";
 import { HerbalTeaStrategy } from "./strategies/herbalTea.strategy";
 import { MagicPillStrategy } from "./strategies/magicPill.strategy";
+import { DafalganStrategy } from "./strategies/dafalgan.strategy";
 
 /**
  * @typedef {Object} DrugProps
@@ -63,6 +64,8 @@ export class Drug {
         return new FervexStrategy();
       case DRUGS_TYPES.DOLIPRANE:
         return new DolipraneStrategy();
+      case DRUGS_TYPES.DAFALGAN:
+        return new DafalganStrategy();
       default:
         return new DrugStrategy();
     }
