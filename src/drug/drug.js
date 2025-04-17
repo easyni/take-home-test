@@ -1,4 +1,9 @@
+import { DRUGS_TYPES } from "./utils/drug.const";
 import { DrugStrategy } from "./drug.strategy";
+import { DolipraneStrategy } from "./strategies/doliprane.strategy";
+import { FervexStrategy } from "./strategies/fervex.strategy";
+import { HerbalTeaStrategy } from "./strategies/herbalTea.strategy";
+import { MagicPillStrategy } from "./strategies/magicPill.strategy";
 
 /**
  * @typedef {Object} DrugProps
@@ -50,6 +55,14 @@ export class Drug {
    */
   #getStrategy(name) {
     switch (name) {
+      case DRUGS_TYPES.HERBAL_TEA:
+        return new HerbalTeaStrategy();
+      case DRUGS_TYPES.MAGIC_PILL:
+        return new MagicPillStrategy();
+      case DRUGS_TYPES.FERVEX:
+        return new FervexStrategy();
+      case DRUGS_TYPES.DOLIPRANE:
+        return new DolipraneStrategy();
       default:
         return new DrugStrategy();
     }

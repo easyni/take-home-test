@@ -1,8 +1,12 @@
 import { Drug } from "./drug";
 import { DrugStrategy } from "./drug.strategy";
+import { DolipraneStrategy } from "./strategies/doliprane.strategy";
+import { HerbalTeaStrategy } from "./strategies/herbalTea.strategy";
 
 // Mock the strategy classes
 jest.mock("./drug.strategy");
+jest.mock("./strategies/doliprane.strategy");
+
 describe("Drug", () => {
   beforeEach(() => {
     // Clear all mocks before each test
@@ -10,6 +14,10 @@ describe("Drug", () => {
 
     // Setup default mock implementations
     DrugStrategy.mockImplementation(() => ({
+      applyStrategy: jest.fn((props) => props),
+    }));
+
+    DolipraneStrategy.mockImplementation(() => ({
       applyStrategy: jest.fn((props) => props),
     }));
   });
@@ -38,6 +46,30 @@ describe("Drug", () => {
       expect(drug.expiresIn).toBe(9);
       expect(drug.benefit).toBe(21);
     });
+  });
+
+  it("should use the correct strategy to update drug properties", () => {
+    const drug = new Drug("Test Drug", 10, 20);
+    const mockApplyStrategy = jest.fn().mockReturnValue({
+      name: "Test Drug",
+      expiresIn: 9,
+      benefit: 21,
+    });
+
+    HerbalTeaStrategy.mockImplementation(() => ({
+      applyStrategy: mockApplyStrategy,
+    }));
+
+    drug.updateBenefitValue();
+
+    expect(mockApplyStrategy).toHaveBeenCalledWith({
+      name: "Test Drug",
+      expiresIn: 10,
+      benefit: 20,
+    });
+
+    expect(drug.expiresIn).toBe(9);
+    expect(drug.benefit).toBe(21);
   });
 
   describe("getProps", () => {
