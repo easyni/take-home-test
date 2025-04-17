@@ -1,11 +1,11 @@
-export class Drug {
-  constructor(name, expiresIn, benefit) {
-    this.name = name;
-    this.expiresIn = expiresIn;
-    this.benefit = benefit;
-  }
-}
-
+/**
+ * Pharmacy class
+ * This class is responsible for managing the drugs in the pharmacy.
+ * It has a method to update the benefit value of each drug based on its name and expiration date.
+ * @class
+ * @param {Array} drugs - An array of Drug objects.
+ * @property {Drug[]} drugs - An array of Drug objects.
+ */
 export class Pharmacy {
   constructor(drugs = []) {
     this.drugs = drugs;
