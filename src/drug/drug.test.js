@@ -1,0 +1,56 @@
+import { Drug } from "./drug";
+import { DrugStrategy } from "./drug.strategy";
+
+// Mock the strategy classes
+jest.mock("./drug.strategy");
+describe("Drug", () => {
+  beforeEach(() => {
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+
+    // Setup default mock implementations
+    DrugStrategy.mockImplementation(() => ({
+      applyStrategy: jest.fn((props) => props),
+    }));
+  });
+
+  describe("updateBenefitValue", () => {
+    it("should use the apply default DrugStrategy to unknown drugs", () => {
+      const drug = new Drug("Test Drug", 10, 20);
+      const mockApplyStrategy = jest.fn().mockReturnValue({
+        name: "Test Drug",
+        expiresIn: 9,
+        benefit: 21,
+      });
+
+      DrugStrategy.mockImplementation(() => ({
+        applyStrategy: mockApplyStrategy,
+      }));
+
+      drug.updateBenefitValue();
+
+      expect(mockApplyStrategy).toHaveBeenCalledWith({
+        name: "Test Drug",
+        expiresIn: 10,
+        benefit: 20,
+      });
+
+      expect(drug.expiresIn).toBe(9);
+      expect(drug.benefit).toBe(21);
+    });
+  });
+
+  describe("getProps", () => {
+    it("should return an object with the drug properties", () => {
+      const drug = new Drug("Test Drug", 10, 20);
+
+      const props = drug.getProps();
+
+      expect(props).toEqual({
+        name: "Test Drug",
+        expiresIn: 10,
+        benefit: 20,
+      });
+    });
+  });
+});

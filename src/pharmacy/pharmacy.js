@@ -1,64 +1,25 @@
 /**
- * Pharmacy class
- * This class is responsible for managing the drugs in the pharmacy.
- * It has a method to update the benefit value of each drug based on its name and expiration date.
- * @class
- * @param {Array} drugs - An array of Drug objects.
- * @property {Drug[]} drugs - An array of Drug objects.
+ * @class Pharmacy
+ * @description Represents a pharmacy that manages a collection of drugs.
  */
 export class Pharmacy {
+  drugs;
+
+  /**
+   * Creates an instance of the Pharmacy class.
+   * @param {import('../drug/drug').Drug[]} drugs - An array of drugs to be managed by the pharmacy.
+   */
   constructor(drugs = []) {
     this.drugs = drugs;
   }
+
+  /**
+   * Updates the benefit value of all drugs in the pharmacy
+   * @returns {import('../drug/drug').Drug[]} - The updated array of drugs.
+   */
   updateBenefitValue() {
-    for (var i = 0; i < this.drugs.length; i++) {
-      if (
-        this.drugs[i].name != "Herbal Tea" &&
-        this.drugs[i].name != "Fervex"
-      ) {
-        if (this.drugs[i].benefit > 0) {
-          if (this.drugs[i].name != "Magic Pill") {
-            this.drugs[i].benefit = this.drugs[i].benefit - 1;
-          }
-        }
-      } else {
-        if (this.drugs[i].benefit < 50) {
-          this.drugs[i].benefit = this.drugs[i].benefit + 1;
-          if (this.drugs[i].name == "Fervex") {
-            if (this.drugs[i].expiresIn < 11) {
-              if (this.drugs[i].benefit < 50) {
-                this.drugs[i].benefit = this.drugs[i].benefit + 1;
-              }
-            }
-            if (this.drugs[i].expiresIn < 6) {
-              if (this.drugs[i].benefit < 50) {
-                this.drugs[i].benefit = this.drugs[i].benefit + 1;
-              }
-            }
-          }
-        }
-      }
-      if (this.drugs[i].name != "Magic Pill") {
-        this.drugs[i].expiresIn = this.drugs[i].expiresIn - 1;
-      }
-      if (this.drugs[i].expiresIn < 0) {
-        if (this.drugs[i].name != "Herbal Tea") {
-          if (this.drugs[i].name != "Fervex") {
-            if (this.drugs[i].benefit > 0) {
-              if (this.drugs[i].name != "Magic Pill") {
-                this.drugs[i].benefit = this.drugs[i].benefit - 1;
-              }
-            }
-          } else {
-            this.drugs[i].benefit =
-              this.drugs[i].benefit - this.drugs[i].benefit;
-          }
-        } else {
-          if (this.drugs[i].benefit < 50) {
-            this.drugs[i].benefit = this.drugs[i].benefit + 1;
-          }
-        }
-      }
+    for (let i = 0; i < this.drugs.length; i++) {
+      this.drugs[i].updateBenefitValue();
     }
 
     return this.drugs;
